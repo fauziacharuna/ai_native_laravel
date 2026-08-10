@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b0562cb91113e63de6d3857cad96926",
+    "content-hash": "5d79a5ac1e90e9f230603efce3484165",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -349,6 +349,81 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "caresome/filament-auth-designer",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caresome/filament-auth-designer.git",
+                "reference": "0fd19029cb9ebd8b3881413bf4b2e516d6f0264f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caresome/filament-auth-designer/zipball/0fd19029cb9ebd8b3881413bf4b2e516d6f0264f",
+                "reference": "0fd19029cb9ebd8b3881413bf4b2e516d6f0264f",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "illuminate/contracts": "^11.0||^12.0||^13.0",
+                "php": "^8.2|^8.3|^8.4|^8.5",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "rector/rector": "^2.2",
+                "spatie/laravel-ray": "^1.35"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Caresome\\FilamentAuthDesigner\\AuthDesignerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Caresome\\FilamentAuthDesigner\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caresome",
+                    "email": "dev@caresome.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Transform Filament's default auth pages into stunning, brand-ready experiences",
+            "homepage": "https://github.com/caresome/filament-auth-designer",
+            "keywords": [
+                "Authentication",
+                "auth-designer",
+                "auth-pages",
+                "caresome",
+                "filament",
+                "filament-plugin",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/caresome/filament-auth-designer/issues",
+                "source": "https://github.com/caresome/filament-auth-designer/tree/v3.1.0"
+            },
+            "time": "2026-04-08T00:05:50+00:00"
         },
         {
             "name": "chillerlan/php-qrcode",
@@ -7928,6 +8003,68 @@
                 }
             ],
             "time": "2026-06-08T20:24:16+00:00"
+        },
+        {
+            "name": "thalysjuvenal/aurum-filament-theme",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thalysjuvenal/aurum-filament-theme.git",
+                "reference": "b57fbdac697ae819dfc3f9c6a17f16294bae8003"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thalysjuvenal/aurum-filament-theme/zipball/b57fbdac697ae819dfc3f9c6a17f16294bae8003",
+                "reference": "b57fbdac697ae819dfc3f9c6a17f16294bae8003",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.10",
+                "laravel/pint": "^1.29",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ThalysJuvenal\\Aurum\\AurumThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ThalysJuvenal\\Aurum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thalys Juvenal"
+                }
+            ],
+            "description": "Aurum — executive gold/graphite theme plugin for FilamentPHP v5 panels",
+            "keywords": [
+                "dark-sidebar",
+                "filament",
+                "filamentphp",
+                "laravel",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/thalysjuvenal/aurum-filament-theme/issues",
+                "source": "https://github.com/thalysjuvenal/aurum-filament-theme/tree/v1.1.2"
+            },
+            "time": "2026-07-13T11:21:25+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

@@ -3,356 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelacakan Berkas Layanan - MPP Digital</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-gradient-start: #e0e7ff;
-            --bg-gradient-end: #f5f3ff;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --text-main: #1e1b4b;
-            --text-muted: #4b5563;
-            --border-color: #e5e7eb;
-            
-            /* Status Colors */
-            --submitted: #6b7280;
-            --in_process: #0ea5e9;
-            --hold: #ef4444;
-            --ready: #f59e0b;
-            --completed: #10b981;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-            min-height: 100vh;
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 650px;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.08);
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .search-form {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            flex-grow: 1;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 14px;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.2s ease;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        .btn {
-            padding: 16px 28px;
-            background: var(--primary);
-            color: #ffffff;
-            border: none;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* Result Section */
-        .result-card {
-            border-top: 1px solid var(--border-color);
-            padding-top: 30px;
-        }
-
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .meta-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .meta-val {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #fff;
-            width: fit-content;
-        }
-
-        .status-submitted { background-color: var(--submitted); }
-        .status-in_process { background-color: var(--in_process); }
-        .status-hold { background-color: var(--hold); }
-        .status-ready { background-color: var(--ready); }
-        .status-completed { background-color: var(--completed); }
-
-        /* Timeline styles */
-        .timeline-section h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 24px;
-            border-left: 2px solid var(--border-color);
-            margin-left: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .timeline-item {
-            position: relative;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            left: -33px;
-            top: 2px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #fff;
-            border: 3px solid var(--primary);
-            transition: all 0.2s ease;
-        }
-
-        .timeline-item.active .timeline-marker {
-            background: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
-        }
-
-        .timeline-content {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .timeline-title {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .timeline-date {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .timeline-desc {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-top: 4px;
-            background: #fff;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Error/Alert box */
-        .alert {
-            padding: 16px 20px;
-            border-radius: 14px;
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #dc2626;
-            margin-bottom: 24px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .footer {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-    </style>
+    <title>Pelacakan Permohonan - MPP Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+    <nav class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+            <a href="/" class="flex items-center gap-4">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+                    MPP
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900">Mal Pelayanan Publik</h1>
+                    <p class="text-sm text-slate-500">Portal Pelayanan Publik Terintegrasi</p>
+                </div>
+            </a>
 
-    <div class="container">
-        <div class="header">
-            <h1>MPP Digital Tracking</h1>
-            <p>Masukkan Nomor Lacak Berkas/Permohonan Anda untuk melihat progress</p>
-        </div>
-
-        <form action="{{ route('tracking.search') }}" method="GET" class="search-form">
-            <div class="input-group">
-                <input type="text" name="nomor_lacak" placeholder="Contoh: MPP-20260716-0001" value="{{ $nomor_lacak ?? '' }}" required autocomplete="off">
+            <div class="hidden items-center gap-8 text-slate-700 md:flex">
+                <a href="/" class="hover:text-blue-600">Beranda</a>
+                <a href="{{ route('ambil-antrian') }}" class="hover:text-blue-600">Antrian</a>
+                <a href="{{ route('tracking.index') }}" class="font-semibold text-blue-700">Tracking</a>
+                <a href="{{ route('survey.kepuasan') }}" class="hover:text-blue-600">Survey</a>
             </div>
-            <button type="submit" class="btn">Lacak</button>
-        </form>
+        </div>
+    </nav>
 
-        @if(isset($searched))
-            @if($tracking)
-                <div class="result-card">
-                    <div class="meta-grid">
-                        <div class="meta-item">
-                            <span class="meta-label">Nomor Lacak</span>
-                            <span class="meta-val" style="color: var(--primary);">{{ $tracking->nomor_lacak }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Pemohon</span>
-                            <span class="meta-val">{{ $tracking->nama_pemohon }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Instansi / Dinas</span>
-                            <span class="meta-val">{{ $tracking->dinas->nama }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Jenis Layanan</span>
-                            <span class="meta-val">{{ $tracking->layanan->nama_layanan }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status Saat Ini</span>
-                            <span class="status-badge status-{{ $tracking->status_sekarang }}">
-                                {{ match($tracking->status_sekarang) {
-                                    'submitted' => 'Diterima',
-                                    'in_process' => 'Diproses',
-                                    'hold' => 'Ditangguhkan',
-                                    'ready' => 'Siap Diambil',
-                                    'completed' => 'Selesai',
-                                } }}
-                            </span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Estimasi Selesai</span>
-                            <span class="meta-val">{{ $tracking->tanggal_selesai_estimasi ? $tracking->tanggal_selesai_estimasi->format('d M Y, H:i') : '-' }}</span>
-                        </div>
-                    </div>
-
-                    <div class="timeline-section">
-                        <h3>Riwayat Perkembangan Berkas</h3>
-                        <div class="timeline">
-                            @foreach($tracking->logs as $index => $log)
-                                <div class="timeline-item {{ $index === 0 ? 'active' : '' }}">
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <span class="timeline-title" style="color: var(--{{ $log->status }});">
-                                            {{ match($log->status) {
-                                                'submitted' => 'Berkas Diterima',
-                                                'in_process' => 'Sedang Diproses',
-                                                'hold' => 'Ditangguhkan (Berkas Kurang)',
-                                                'ready' => 'Siap Diambil',
-                                                'completed' => 'Berkas Diserahkan',
-                                            } }}
-                                        </span>
-                                        <span class="timeline-date">{{ $log->created_at->format('d M Y, H:i') }} oleh {{ $log->petugas ? $log->petugas->name : 'Sistem' }}</span>
-                                        @if($log->catatan)
-                                            <p class="timeline-desc">{{ $log->catatan }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+    <section class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-700">
+        <div class="mx-auto max-w-7xl px-6 py-20 lg:py-24">
+            <div class="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+                <div>
+                    <span class="inline-flex rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white">
+                        Pantau status permohonan Anda
+                    </span>
+                    <h1 class="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl">
+                        Lacak perkembangan berkas secara real-time
+                    </h1>
+                    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-blue-100">
+                        Masukkan nomor lacak Anda untuk melihat status terkini, riwayat proses, dan estimasi penyelesaian layanan.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="{{ route('ambil-antrian') }}" class="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 font-semibold text-blue-700 shadow hover:bg-blue-50">
+                            Ambil Antrian
+                        </a>
+                        <a href="{{ route('survey.kepuasan') }}" class="inline-flex items-center justify-center rounded-xl border border-white/60 px-6 py-3 font-semibold text-white hover:bg-white/10">
+                            Isi Survey
+                        </a>
                     </div>
                 </div>
+
+                <div class="rounded-[28px] border border-white/30 bg-white/95 p-8 shadow-2xl backdrop-blur">
+                    <form action="{{ route('tracking.search') }}" method="GET" class="space-y-4">
+                        <div>
+                            <label for="nomor_lacak" class="mb-2 block text-sm font-semibold text-slate-700">Nomor Lacak</label>
+                            <input
+                                id="nomor_lacak"
+                                type="text"
+                                name="nomor_lacak"
+                                value="{{ $nomor_lacak ?? '' }}"
+                                required
+                                autocomplete="off"
+                                placeholder="Contoh: MPP-20260716-0001"
+                                class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                            >
+                        </div>
+                        <button type="submit" class="w-full rounded-2xl bg-blue-700 px-4 py-3 font-semibold text-white shadow hover:bg-blue-800">
+                            Lacak Permohonan
+                        </button>
+                    </form>
+
+                    <div class="mt-6 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+                        <p class="font-semibold text-slate-800">Cara menggunakan</p>
+                        <ul class="mt-2 list-disc space-y-1 pl-5">
+                            <li>Masukkan nomor lacak yang Anda terima saat mendaftar.</li>
+                            <li>Periksa perkembangan status layanan secara berkala.</li>
+                            <li>Jika ada kendala, gunakan fitur survey untuk memberi masukan.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-6 py-16">
+        <div class="mx-auto max-w-6xl">
+            @if(isset($searched))
+                @if($tracking)
+                    <div class="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-xl">
+                        <div class="border-b border-slate-200 bg-slate-50 px-8 py-8">
+                            <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">Hasil Penelusuran</p>
+                                    <h2 class="mt-2 text-2xl font-bold text-slate-900">Permohonan Anda ditemukan</h2>
+                                    <p class="mt-2 text-slate-600">Berikut status dan riwayat perkembangan berkas Anda.</p>
+                                </div>
+                                <div class="rounded-2xl bg-white px-4 py-3 shadow-sm">
+                                    <p class="text-sm text-slate-500">Nomor Lacak</p>
+                                    <p class="text-lg font-bold text-blue-700">{{ $tracking->nomor_lacak }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-8">
+                            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Pemohon</p>
+                                    <p class="mt-1 font-semibold text-slate-900">{{ $tracking->nama_pemohon }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Instansi / Dinas</p>
+                                    <p class="mt-1 font-semibold text-slate-900">{{ $tracking->dinas->nama }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Jenis Layanan</p>
+                                    <p class="mt-1 font-semibold text-slate-900">{{ $tracking->layanan->nama_layanan }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Status Saat Ini</p>
+                                    <span class="mt-2 inline-flex rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
+                                        {{ match($tracking->status_sekarang) {
+                                            'submitted' => 'Diterima',
+                                            'in_process' => 'Diproses',
+                                            'hold' => 'Ditangguhkan',
+                                            'ready' => 'Siap Diambil',
+                                            'completed' => 'Selesai',
+                                        } }}
+                                    </span>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Estimasi Selesai</p>
+                                    <p class="mt-1 font-semibold text-slate-900">{{ $tracking->tanggal_selesai_estimasi ? $tracking->tanggal_selesai_estimasi->format('d M Y, H:i') : '-' }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 p-4">
+                                    <p class="text-sm text-slate-500">Terakhir Diperbarui</p>
+                                    <p class="mt-1 font-semibold text-slate-900">{{ $tracking->updated_at ? $tracking->updated_at->format('d M Y, H:i') : '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-10">
+                                <h3 class="text-xl font-bold text-slate-900">Riwayat Perkembangan Berkas</h3>
+                                <div class="mt-6 space-y-5 border-l-2 border-slate-200 pl-6">
+                                    @foreach($tracking->logs as $index => $log)
+                                        <div class="relative">
+                                            <div class="absolute -left-[29px] top-1 h-4 w-4 rounded-full border-4 border-white {{ $index === 0 ? 'bg-blue-600' : 'bg-slate-300' }}"></div>
+                                            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                                    <p class="font-semibold text-slate-900">
+                                                        {{ match($log->status) {
+                                                            'submitted' => 'Berkas Diterima',
+                                                            'in_process' => 'Sedang Diproses',
+                                                            'hold' => 'Ditangguhkan (Berkas Kurang)',
+                                                            'ready' => 'Siap Diambil',
+                                                            'completed' => 'Berkas Diserahkan',
+                                                        } }}
+                                                    </p>
+                                                    <p class="text-sm text-slate-500">{{ $log->created_at->format('d M Y, H:i') }} oleh {{ $log->petugas ? $log->petugas->name : 'Sistem' }}</p>
+                                                </div>
+                                                @if($log->catatan)
+                                                    <p class="mt-3 text-sm leading-relaxed text-slate-600">{{ $log->catatan }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="rounded-[28px] border border-red-200 bg-red-50 p-8 text-center shadow-sm">
+                        <h2 class="text-2xl font-bold text-red-700">Nomor lacak tidak ditemukan</h2>
+                        <p class="mt-3 text-slate-600">
+                            Maaf, nomor lacak <strong>{{ $nomor_lacak }}</strong> tidak ditemukan dalam sistem. Harap periksa kembali penulisan nomor lacak Anda.
+                        </p>
+                    </div>
+                @endif
             @else
-                <div class="alert">
-                    Maaf, nomor lacak <strong>{{ $nomor_lacak }}</strong> tidak ditemukan dalam sistem. Harap periksa kembali penulisan nomor lacak Anda.
+                <div class="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm">
+                    <h2 class="text-2xl font-bold text-slate-900">Cek status permohonan Anda</h2>
+                    <p class="mt-3 text-slate-600">Gunakan form di atas untuk melihat perkembangan layanan yang sedang Anda ajukan.</p>
                 </div>
             @endif
-        @endif
-
-        <div class="footer">
-            Sistem Informasi Layanan Publik MPP Digital &copy; 2026. <br>
-            Kembali ke <a href="/admin">Panel Admin</a>
         </div>
-    </div>
-
+    </section>
 </body>
 </html>

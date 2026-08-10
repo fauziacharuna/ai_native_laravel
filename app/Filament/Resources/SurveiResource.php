@@ -6,10 +6,10 @@ use App\Filament\Resources\SurveiResource\Pages;
 use App\Models\Survei;
 use Filament\Forms;
 use Filament\Schemas\Schema;
-
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
 
 class SurveiResource extends Resource
 {
@@ -21,9 +21,9 @@ class SurveiResource extends Resource
     protected static ?string $pluralModelLabel = 'Hasil Survei';
     protected static string | \UnitEnum | null $navigationGroup = 'Laporan & Analitik';
 
-    public static function Schema(Schema $form): Schema
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('tracking_id')
                     ->relationship('tracking', 'nomor_lacak')
@@ -90,7 +90,7 @@ class SurveiResource extends Resource
                     ->label('Rating Bintang'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                ViewAction::make(),
             ])
             ->bulkActions([]);
     }

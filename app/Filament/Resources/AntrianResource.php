@@ -7,14 +7,12 @@ use App\Models\Antrian;
 use App\Models\Tracking;
 use App\Models\TrackingLog;
 use Filament\Forms;
-
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Carbon\Carbon;
@@ -29,9 +27,9 @@ class AntrianResource extends Resource
     protected static ?string $pluralModelLabel = 'Antrian';
     protected static string | \UnitEnum | null $navigationGroup = 'Layanan & Antrian';
 
-    public static function Schema(Schema $form): Schema
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('dinas_id')
                     ->relationship('dinas', 'nama')
@@ -243,13 +241,11 @@ class AntrianResource extends Resource
 
                 EditAction::make(),
             ])
-            
-           ->bulkActions([
-    \Filament\Actions\BulkActionGroup::make([
-        \Filament\Actions\DeleteBulkAction::make(),
-    ]),
-
-]);
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getPages(): array

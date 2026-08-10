@@ -6,10 +6,13 @@ use App\Filament\Resources\DinasResource\Pages;
 use App\Models\Dinas;
 use Filament\Forms;
 use Filament\Schemas\Schema;
-
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 
 class DinasResource extends Resource
 {
@@ -21,9 +24,9 @@ class DinasResource extends Resource
     protected static ?string $pluralModelLabel = 'Gerai Dinas';
     protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
 
-    public static function Schema(Schema $form): Schema
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama')
                     ->required()
@@ -72,12 +75,12 @@ class DinasResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

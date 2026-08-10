@@ -6,10 +6,13 @@ use App\Filament\Resources\LayananResource\Pages;
 use App\Models\Layanan;
 use Filament\Forms;
 use Filament\Schemas\Schema;
-
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 
 class LayananResource extends Resource
 {
@@ -21,9 +24,9 @@ class LayananResource extends Resource
     protected static ?string $pluralModelLabel = 'Standar Pelayanan';
     protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
 
-    public static function Schema(Schema $form): Schema
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('dinas_id')
                     ->relationship('dinas', 'nama')
@@ -96,12 +99,12 @@ class LayananResource extends Resource
                     ->preload(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
